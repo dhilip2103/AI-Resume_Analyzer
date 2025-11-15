@@ -1,0 +1,14 @@
+{
+    "IT": [
+        "python", "java", "c++", "sql", "cloud computing", "data science", "mongodb",
+        "machine learning", "deep learning", "big data", "cybersecurity", 
+        "network security", "api development", "javascript", "typescript",
+        "html", "css", "react", "angular", "node.js", "docker", "kubernetes",
+        "devops", "linux", "bash scripting", "power bi", "tableau"
+    ],
+    "Soft Skills": [
+        "communication", "leadership", "problem-solving", "critical thinking",
+        "time management", "adaptability", "teamwork", "creativity", 
+        "emotional intelligence", "decision making", "negotiation"
+    ]
+}

@@ -1,0 +1,52 @@
+Runserver the Django server in VS Code
+
+PS C:\Users\Lenovo\Desktop\Resume Analyzer> cd resume_analyzer
+PS C:\Users\Lenovo\Desktop\Resume Analyzer\resume_analyzer> python manage.py runserver     
+Watching for file changes with StatReloader
+Performing system checks...
+
+ Warning: skills_db.json not found! Using an empty skills database.
+System check identified no issues (0 silenced).
+April 21, 2025 - 11:38:50
+Django version 5.1.6, using settings 'resume_analyzer.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK
+
+Start the Server:
+
+User Management Module : 
+
+[21/Apr/2025 11:40:48] "GET / HTTP/1.1" 200 5856
+[21/Apr/2025 11:41:03] "GET /landing/ HTTP/1.1" 200 7927
+Not Found: /favicon.ico
+[21/Apr/2025 11:40:52] "GET /favicon.ico HTTP/1.1" 404 3708
+[21/Apr/2025 11:41:03] "GET /dashboard/ HTTP/1.1" 200 7927
+[21/Apr/2025 11:41:30] "GET /dashboard/ HTTP/1.1" 200 7927
+
+AI Resume Analyzer Module:
+
+[21/Apr/2025 11:43:30] "POST /upload/ HTTP/1.1" 302 0
+[21/Apr/2025 11:43:30] "GET /analyze/ HTTP/1.1" 200 7714
+[21/Apr/2025 11:43:42] "GET /upload/ HTTP/1.1" 200 8041
+
+Job Matching Module: 
+
+[21/Apr/2025 11:46:31] "GET /dashboard/ HTTP/1.1" 200 7927
+[21/Apr/2025 11:46:38] "GET /job_matching/job_match/ HTTP/1.1" 200 7513
+[21/Apr/2025 11:47:08] "POST /job_matching/job_match/ HTTP/1.1" 302 0
+[21/Apr/2025 11:47:18] "GET /job_matching/job_result/44/ HTTP/1.1" 200 13303
+
+Resume Builder Module:
+
+[21/Apr/2025 11:49:13] "GET / HTTP/1.1" 200 5856
+[21/Apr/2025 11:49:15] "GET /dashboard/ HTTP/1.1" 200 7927
+[21/Apr/2025 11:49:20] "GET /resume_builder/select/ HTTP/1.1" 200 7222
+[21/Apr/2025 11:49:20] "GET /static/img/Professional_Resume.jpg HTTP/1.1" 304 0
+[21/Apr/2025 11:49:20] "GET /static/img/Double_Column_Resume.jpg HTTP/1.1" 304 0
+[21/Apr/2025 11:49:21] "GET /static/img/Simple_Resume.jpg HTTP/1.1" 304 0       
+[21/Apr/2025 11:49:25] "GET /resume_builder/workspace/template1/ HTTP/1.1" 200 7465
+[21/Apr/2025 11:49:27] "GET /resume_builder/preview/ HTTP/1.1" 200 5566
+[21/Apr/2025 11:49:44] "GET /resume_builder/workspace/template2/ HTTP/1.1" 200 7921
+[21/Apr/2025 11:49:46] "GET /resume_builder/preview/ HTTP/1.1" 200 6022
+[21/Apr/2025 11:49:59] "GET /resume_builder/workspace/template3/ HTTP/1.1" 200 8110
+[21/Apr/2025 11:50:02] "GET /resume_builder/preview/ HTTP/1.1" 200 6211

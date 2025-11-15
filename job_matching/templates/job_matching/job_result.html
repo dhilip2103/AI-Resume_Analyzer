@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Match Analysis Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.95);
+            --gradient: linear-gradient(-45deg,rgb(184, 207, 236),rgb(88, 141, 211));
+        }
+
+        body {
+            background: var(--gradient);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 3rem;
+            background: var(--glass);
+            border-radius: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Updated Score Display */
+        .resume-score-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 1.5rem;
+            padding: 2rem;
+            color: white;
+            margin: 1rem auto;
+            position: relative;
+            overflow: hidden;
+            width: 80%;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .resume-score-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-percent {
+            font-size: 1.25rem;
+            vertical-align: super;
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        /* Resume_Name*/
+        .uploaded-resume {
+            background: linear-gradient(45deg, #ffffff, #f8fafc);
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
+            max-width: 350px;
+            margin: 0 auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Skill Cards */
+        .skill-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .matched-skill {
+            background: linear-gradient(45deg, #e6f6ed, #f0fdf4);
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            box-shadow: 0 4px 6px rgba(22, 101, 52, 0.1);
+        }
+
+        .missing-skill {
+            background: linear-gradient(45deg, #fee2e2, #fef2f2);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            box-shadow: 0 4px 6px rgba(153, 27, 27, 0.1);
+        }
+
+        /* Optimization Tips */
+        .optimization-card {
+            background: linear-gradient(135deg, #fff, #f8fafc);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+        }
+
+        .optimization-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tip-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .tip-item {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(99, 102, 241, 0.03);
+            border-radius: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .tip-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateX(5px);
+        }
+
+        .tip-bullet {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            background: #e0e7ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-gradient {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 1.5rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(99, 102, 241, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h4 class="display-4 fw-bold mb-4"  style="font-size: 40px;">Job Match Analysis Report</h4>
+            
+            <!-- Score Display -->
+            <div class="resume-score-card text-center">
+                <div class="score-display">
+                    {{ match_score|default:"0" }}<span class="score-percent">%</span>
+                </div>
+                <div class="score-label">
+                    Overall Resume Match Score
+                </div>
+            </div>
+
+            <!-- Uploaded Resume -->
+            <div class="uploaded-resume d-inline-flex align-items-center mb-4">
+                <i class="fas fa-file-pdf text-danger me-2"></i>
+                <span class="fw-medium text-truncate">
+                    {{ resume_name|default:"My_Resume.pdf" }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Job Description -->
+        <div class="skill-card">
+            <h3 class="h4 fw-semibold mb-3">
+                <i class="fas fa-clipboard-list me-2 text-primary"></i>
+                Job Description Analysis
+            </h3>
+            <p class="text-muted mb-0">{{ job_description|default:"No job description provided." }}</p>
+        </div>
+
+        <!-- Skills Analysis -->
+        <div class="row g-4">
+            <!-- Matched Skills -->
+            {% if matched_skills %}
+            <div class="col-md-6">
+                <div class="skill-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-check-circle fa-lg text-success me-2"></i>
+                        <h3 class="h4 fw-semibold mb-0">Matched Skills ({{ matched_skills|length }})</h3>
+                    </div>
+                    <div>
+                        {% for skill in matched_skills %}
+                        <div class="skill-badge matched-skill">
+                            <i class="fas fa-check me-2"></i>
+                            {{ skill }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Missing Skills -->
+            {% if missing_skills %}
+            <div class="col-md-6">
+                <div class="skill-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-exclamation-circle fa-lg text-danger me-2"></i>
+                        <h3 class="h4 fw-semibold mb-0">Missing Skills ({{ missing_skills|length }})</h3>
+                    </div>
+                    <div>
+                        {% for skill in missing_skills %}
+                        <div class="skill-badge missing-skill">
+                            <i class="fas fa-times me-2"></i>
+                            {{ skill }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Optimization Tips -->
+        {% if feedback %}
+        <div class="optimization-card">
+            <div class="optimization-header">
+                <div class="tip-icon">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <div>
+                    <h5>Feedback & Suggestions </h5>
+                    <p class="text-muted">Personalized recommendations to improve your resume</p>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <div class="tip-bullet">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="tip-content">
+                    {{ feedback|default:"No feedback available." }}
+                </div>
+            </div>
+
+
+            <!-- Additional Tips
+                <i class="fas fa-rocket"></i>
+            <div class="tip-item">
+                <div class="tip-bullet">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="tip-content">
+                    Consider adding metrics to quantify your achievements
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <div class="tip-bullet">
+                    <i class="fas fa-keyboard"></i>
+                </div>
+                <div class="tip-content">
+                    Incorporate strong action verbs such as "developed," "managed," and "optimized" to clearly demonstrate your contributions and impact.
+                    Using dynamic language enhances clarity and makes your achievements more compelling to recruiters.
+                </div>
+            </div>
+        </div>
+        {% endif %}
+         -->
+
+        <!-- Action Button -->
+        <div class="text-center mt-5">
+            <a href="{% url 'job_matching:job_matching' %}" class="btn btn-gradient">
+                <i class="fas fa-redo me-2"></i>
+                Start New Analysis
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

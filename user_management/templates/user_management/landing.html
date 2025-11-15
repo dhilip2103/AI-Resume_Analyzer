@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="static\css\landing.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <script src="static\js\landing.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center">
+                <img src="static\img\ai_logo.png" alt="Logo" width="40" height="40" class="me-2">
+                AI Resume Analyzer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto me-4">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                </ul>
+                <a href="{% url  'dashboard' %}" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-4">AI-Powered Resume Analyzer</h1>
+                    <p class="lead mb-4">Get instant feedback on your resume, optimize for ATS systems that land interviews.</p>
+                    <a href="{% url  'dashboard' %}" class="btn btn-primary">Start Free Analysis</a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="static\img\hero.png" alt="AI Resume Analysis" class="hero-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Powerful Features</h2>
+
+        <div class="row g-5 justify-content-center">   <!-- ADD THIS CLASS -->
+            <div class="col-md-4">
+                <div class="card feature-card h-100 p-4">
+                    <div class="card-body">
+                        <img src="\static\img\resume_analysis.jpg" alt="Resume Builder" class="img-fluid">
+                        <h5 class="card-title">AI Resume Analysis</h5>
+                        <p class="card-text">Get instant feedback on your resume's strengths and weaknesses using advanced AI algorithms.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100 p-4">
+                    <div class="card-body">
+                        <img src="\static\img\ats.jpg" alt="Resume Builder" class="img-fluid">
+                        <h5 class="card-title">ATS Optimization</h5>
+                        <p class="card-text">Ensure your resume passes through Applicant Tracking Systems with flying colors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+    <!-- Footer Section -->
+    <footer id="about" class="bg-dark py-4">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <!-- Brand Section -->
+                <div class="col-12 mb-4">
+                    <img src="static\img\ai_logo.png" alt="Logo" width="40" height="40" class="me-2">
+                    <h3 class="text-white mb-3">AI Resume Analyzer</h3>
+                    <p class="text-light">Revolutionizing job search through AI-powered resume optimization.</p>
+                </div>
+    
+                <!-- Company Links -->
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="d-flex justify-content-center gap-4">
+                        <a href="#" class="text-white text-decoration-none">About Us</a>
+                        <a href="#" class="text-white text-decoration-none">Contact</a>
+                        <a href="#" class="text-white text-decoration-none">Privacy & Policy</a>
+                    </div>
+                </div>
+    
+                <!-- Copyright -->
+                <div class="col-12">
+                    <hr class="border-secondary mx-auto" style="max-width: 400px;">
+                    <p class="text-light small mt-3 mb-0">
+                        &copy; 2025 AI Resume Pro. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
+</body>
+</html>

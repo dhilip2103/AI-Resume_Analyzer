@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Matching</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gradient-1: #6366f1;
+            --gradient-2: #a855f7;
+            --gradient: linear-gradient(-45deg,rgb(184, 207, 236),rgb(88, 141, 211));
+        }
+
+        body {
+            background: var(--gradient);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--gradient-1);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .file-preview {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            animation: slideUp 0.2s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-gradient {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-1px);
+            background-color: rgb(145, 186, 236);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center">
+    <div class="container">
+        <div class="glass-card">
+            <h2 class="text-center mb-3 h3 fw-bold text-dark">Job Matching Analysis</h2>
+            
+            <form action="{% url 'job_matching:job_matching' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Resume Upload -->
+                <div class="mb-3">
+                    <label class="form-label fw-medium mb-2 text-dark">Upload Resume</label>
+                    <div class="upload-area position-relative" id="uploadContainer">
+                        <div class="upload-content text-center">
+                            <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
+                            <div class="mb-2 text-muted fs-6">Upload Your Resume or Drag & drop </div>
+                            <button type="button" class="btn btn-gradient px-3 rounded-pill fs-6" 
+                                    onclick="document.getElementById('resumeInput').click()">
+                                Choose File
+                            </button>
+                        </div>
+                        <input type="file" name="resume" class="visually-hidden" id="resumeInput" 
+                               accept=".pdf, .docx" required>
+                    </div>
+                    <div id="filePreview" class="file-preview d-none">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                <span class="file-name fw-medium fs-6"></span>
+                                <small class="file-size text-muted ms-2 fs-7"></small>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-link text-danger p-0" 
+                                    onclick="clearFile()">
+                                <i class="fas fa-times small"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Description -->
+                <div class="mb-3">
+                    <label class="form-label fw-medium mb-2 text-dark">Job Description</label>
+                    <textarea name="job_description" rows="4" class="form-control p-2 fs-6" 
+                              placeholder="Paste job description here..." 
+                              style="border-radius: 8px;"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-gradient w-100 py-2 rounded-pill fw-medium mt-2">
+                    Match Now  <i class="fas fa-bolt ms-2 small"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const uploadContainer = document.getElementById('uploadContainer');
+        const resumeInput = document.getElementById('resumeInput');
+        const filePreview = document.getElementById('filePreview');
+
+        // Drag and drop handlers
+        ['dragenter', 'dragover'].forEach(event => {
+            uploadContainer.addEventListener(event, (e) => {
+                e.preventDefault();
+                uploadContainer.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(event => {
+            uploadContainer.addEventListener(event, () => {
+                uploadContainer.classList.remove('dragover');
+            });
+        });
+
+        uploadContainer.addEventListener('drop', handleDrop);
+
+        function handleFile(e) {
+            const file = e.target.files[0];
+            updateFilePreview(file);
+            uploadContainer.classList.add('d-none'); // Hide entire upload container
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            resumeInput.files = e.dataTransfer.files;
+            updateFilePreview(file);
+            uploadContainer.classList.add('d-none'); // Hide entire upload container
+        }
+
+        function updateFilePreview(file) {
+            if (file) {
+                filePreview.classList.remove('d-none');
+                document.querySelector('.file-name').textContent = file.name;
+                document.querySelector('.file-size').textContent = (file.size / 1024).toFixed(1) + ' KB';
+                
+                const fileIcon = filePreview.querySelector('i');
+                fileIcon.className = file.name.endsWith('.pdf') 
+                    ? 'fas fa-file-pdf text-danger me-2' 
+                    : 'fas fa-file-word text-primary me-2';
+            }
+        }
+
+        function clearFile() {
+            resumeInput.value = '';
+            filePreview.classList.add('d-none');
+            uploadContainer.classList.remove('d-none'); // Show upload container again
+        }
+        resumeInput.addEventListener('change', handleFile);
+    </script>
+</body>
+</html>

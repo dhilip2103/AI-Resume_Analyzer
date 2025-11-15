@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume | CareerBoost AI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(45deg,rgb(137, 177, 224),rgb(88, 141, 211));
+            min-height: 100vh;
+        }
+
+        .upload-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .upload-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .upload-area {
+            border: 3px dashed #ced4da;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #0d6efd;
+            background: rgba(13, 110, 253, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #0d6efd;
+            background: rgba(13, 110, 253, 0.1);
+        }
+
+        .btn-custom {
+            background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+
+        .file-name {
+            max-width: 80%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .uploaded-file {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="upload-container p-5">
+                    <h2 class="text-center mb-4 fw-bold text-primary">
+                        <i class="fas fa-file-upload me-2"></i>Smart Resume Analyzer
+                    </h2>
+                    <p class="text-center text-muted mb-4">
+                        Upload your resume (PDF/DOCX) and get instant AI-powered feedback
+                    </p>
+
+                    <form action="{% url 'upload_resume' %}" method="POST" enctype="multipart/form-data" id="uploadForm">
+                        {% csrf_token %}
+                        
+                        <!-- Uploaded File Preview -->
+                        <div class="uploaded-file d-none" id="filePreview">
+                            <i class="file-icon text-primary"></i>
+                            <div class="file-name fw-medium" id="previewFileName"></div>
+                        </div>
+
+                        <!-- Upload Area -->
+                        <div class="upload-area p-5 text-center mb-4" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                            <h5 class="mb-2">Drag & Drop or Click to Upload</h5>
+                            <p class="text-muted small mb-0">Supported formats: .pdf, .docx</p>
+                            <input type="file" class="form-control d-none" id="resumeFile" name="resume" accept=".pdf, .docx" required>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="file-name text-muted" id="fileName">
+                                No file selected
+                            </div>
+                            <button type="submit" class="btn btn-custom text-white">
+                                <span class="submit-text">Analyze Now</span>
+                                <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
+                            </button>
+                        </div>
+
+                        <div class="alert alert-danger d-none" id="errorAlert"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('resumeFile');
+        const fileName = document.getElementById('fileName');
+        const errorAlert = document.getElementById('errorAlert');
+        const submitBtn = document.querySelector('.submit-text');
+        const spinner = document.getElementById('spinner');
+        const filePreview = document.getElementById('filePreview');
+        const previewFileName = document.getElementById('previewFileName');
+        const fileIcon = filePreview.querySelector('.file-icon');
+
+        // Drag & Drop handlers
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File input change handler
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            if (!fileInput.files.length) {
+                e.preventDefault();
+                showError('Please select a file first!');
+            } else {
+                submitBtn.textContent = 'Analyzing...';
+                spinner.classList.remove('d-none');
+            }
+        });
+
+        function handleFile(file) {
+            const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            
+            if (!validTypes.includes(file.type)) {
+                showError('Invalid file type. Please upload a PDF or DOCX file.');
+                fileInput.value = '';
+                return;
+            }
+
+            // Update UI
+            fileName.textContent = file.name;
+            dropZone.classList.add('d-none');
+            filePreview.classList.remove('d-none');
+            previewFileName.textContent = file.name;
+
+            // Set appropriate icon
+            if (file.type === 'application/pdf') {
+                fileIcon.className = 'file-icon text-danger fas fa-file-pdf';
+            } else {
+                fileIcon.className = 'file-icon text-primary fas fa-file-word';
+            }
+
+            errorAlert.classList.add('d-none');
+        }
+
+        function showError(message) {
+            errorAlert.textContent = message;
+            errorAlert.classList.remove('d-none');
+            setTimeout(() => errorAlert.classList.add('d-none'), 5000);
+            
+            // Reset UI on error
+            dropZone.classList.remove('d-none');
+            filePreview.classList.add('d-none');
+            fileName.textContent = 'No file selected';
+            fileInput.value = '';
+        }
+    </script>
+</body>
+</html>

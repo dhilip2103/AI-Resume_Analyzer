@@ -1,0 +1,47 @@
+# -------------------
+# Python
+# -------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Byte-compiled / optimized files
+*.pyo
+*.pyd
+*.pyc
+
+# -------------------
+# Django
+# -------------------
+db.sqlite3
+*.sqlite3
+*.log
+media/
+.env
+.env.*
+
+# Django Migrations (optional - if you want to keep them, remove this)
+**/migrations/*.pyc
+**/migrations/__pycache__/
+
+# -------------------
+# VS Code Settings
+# -------------------
+.vscode/
+
+# -------------------
+# System Files
+# -------------------
+.DS_Store
+Thumbs.db
+
+# -------------------
+# Node Modules (if using npm/yarn)
+# -------------------
+node_modules/
+
+# -------------------
+# Exported Files / User Uploads (Optional)
+# -------------------
+uploads/
+resumes/

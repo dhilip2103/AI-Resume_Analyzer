@@ -1,0 +1,65 @@
+:root {
+            --gradient-1: #6366f1;
+            --gradient-2: #a855f7;
+            --gradient: linear-gradient(-45deg,rgb(184, 207, 236),rgb(88, 141, 211));
+        }
+
+        body {
+            background: var(--gradient);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--gradient-1);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .file-preview {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            animation: slideUp 0.2s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-gradient {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-1px);
+            background-color: rgb(145, 186, 236);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
