@@ -1,10 +1,10 @@
-<<<<<<< HEAD
-# AI-Resume-Analyzer-Builder
-🚀 AI Resume Analyzer &amp; Builder – An AI-powered web app to analyze, score, and improve resumes for ATS compatibility. Includes a smart resume builder with customizable templates and real-time editing.
 
-# 🧠 AI Resume Analyzer & Builder
+# AI-Resume-Analyzer
+🚀 AI Resume Analyzer – An AI-powered web app to analyze, score, and improve resumes for ATS compatibility.
 
-An AI-powered web app to **analyze**, **score**, and **improve resumes** for ATS compatibility. Includes a smart **resume builder** with customizable templates and real-time editing.
+# 🧠 AI Resume Analyzer
+
+An AI-powered web app to **analyze**, **score**, and **improve resumes** for ATS compatibility.
 
 ## 🔥 Features
 - ✅ Resume Analyzer with grammar & ATS checks
@@ -28,7 +28,6 @@ Landing Pages :
 
 ![image](https://github.com/user-attachments/assets/ba9fe213-66fd-4b7c-a66e-039e680b3e41)
 
-![image](https://github.com/user-attachments/assets/fa17d586-3dbd-41d6-b6e9-582ef3351818)
 
 Dashboard Page : 
 
@@ -36,7 +35,6 @@ Dashboard Page :
 
 ![image](https://github.com/user-attachments/assets/0fd27515-33f9-472a-8978-01cb86d5787e)
 
-![image](https://github.com/user-attachments/assets/19bbedfe-f0e2-4273-b3f1-83f902ccc0ed)
 
 AI-Resume_Analyzer :
 
