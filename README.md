@@ -51,5 +51,3 @@ Job-Matching :
 ## 📜 License
 MIT
 =======
-# AI-Resume_Analyzer
->>>>>>> 9460127e8d5c487cc3465b57235ba565a2a89931
